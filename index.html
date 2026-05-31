@@ -222,6 +222,50 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .footer-col a:hover { color: #4a90d9; }
 .footer-bottom { max-width: 1200px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid #f0f0f0; text-align: center; font-size: 12px; color: #bbb; }
 
+/* Calculator Modal */
+.calc-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); animation: fadeIn 0.2s; }
+.calc-modal.show { display: flex; align-items: center; justify-content: center; }
+.calc-modal-box { background: #fff; border-radius: 16px; width: 560px; max-width: 96vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: slideUp 0.25s ease; }
+.calc-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px 12px; border-bottom: 1px solid #f0f0f0; }
+.calc-modal-header h3 { font-size: 18px; font-weight: 600; color: #333; }
+.calc-modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.calc-modal-close:hover { background: #f5f5f5; color: #333; }
+.calc-modal-body { padding: 20px 24px 28px; }
+.calc-tabs { display: flex; gap: 4px; background: #f5f7fa; border-radius: 10px; padding: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+.calc-tab { flex: 1; min-width: 80px; padding: 8px 4px; border: none; background: transparent; border-radius: 8px; font-size: 13px; color: #666; cursor: pointer; transition: all 0.15s; font-weight: 500; }
+.calc-tab.active { background: #fff; color: #4a90d9; box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-weight: 600; }
+.calc-form { display: flex; flex-direction: column; gap: 14px; }
+.calc-field label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500; }
+.calc-field input, .calc-field select { width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; color: #333; transition: border-color 0.15s; outline: none; box-sizing: border-box; }
+.calc-field input:focus, .calc-field select:focus { border-color: #4a90d9; box-shadow: 0 0 0 3px rgba(74,144,217,0.1); }
+.calc-field small { display: block; margin-top: 4px; }
+.calc-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #4a90d9, #357abd); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+.calc-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(74,144,217,0.3); }
+.calc-btn:active { transform: translateY(0); }
+.calc-result { margin-top: 20px; background: #f8fafd; border-radius: 12px; padding: 18px 20px; }
+.calc-result-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eef2f7; }
+.calc-result-row:last-child { border-bottom: none; }
+.calc-result-row span { font-size: 13px; color: #888; }
+.calc-result-row strong { font-size: 16px; color: #333; }
+.calc-highlight { color: #ff4d4f !important; font-size: 18px !important; }
+.calc-schedule-toggle { margin-top: 12px; text-align: center; }
+.calc-schedule-toggle button { background: none; border: 1px solid #e0e0e0; padding: 6px 16px; border-radius: 8px; font-size: 12px; color: #666; cursor: pointer; transition: all 0.15s; }
+.calc-schedule-toggle button:hover { border-color: #4a90d9; color: #4a90d9; }
+.calc-schedule { margin-top: 12px; max-height: 260px; overflow-y: auto; font-size: 12px; }
+.calc-schedule table { width: 100%; border-collapse: collapse; }
+.calc-schedule th { background: #f0f4f8; padding: 6px 8px; font-size: 11px; color: #666; text-align: center; position: sticky; top: 0; }
+.calc-schedule td { padding: 5px 8px; text-align: center; border-bottom: 1px solid #f0f0f0; color: #555; }
+.calc-schedule tr:hover td { background: #f8fafd; }
+
+@media (max-width: 600px) {
+  .calc-modal-box { border-radius: 12px; }
+  .calc-tabs { gap: 2px; padding: 3px; }
+  .calc-tab { font-size: 12px; padding: 6px 2px; min-width: 70px; }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
 /* Responsive */
 @media (max-width: 768px) {
   .main { grid-template-columns: 1fr; }
@@ -305,6 +349,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <span class="cat-tag" role="tab" aria-selected="false" tabindex="0" onclick="filterCategory('car', this)" onkeydown="if(event.key==='Enter'){this.click()}">🚗 车贷</span>
       <span class="cat-tag" role="tab" aria-selected="false" tabindex="0" onclick="filterCategory('micro', this)" onkeydown="if(event.key==='Enter'){this.click()}">💵 小额贷款</span>
       <span class="cat-tag" role="tab" aria-selected="false" tabindex="0" onclick="filterCategory('business', this)" onkeydown="if(event.key==='Enter'){this.click()}">🏢 企业贷款</span>
+      <span class="cat-tag" role="tab" aria-selected="false" tabindex="0" onclick="filterCategory('calculator', this)" onkeydown="if(event.key==='Enter'){this.click()}">🧮 利率计算器</span>
     </div>
   </div>
 </nav>
@@ -745,6 +790,68 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       </div>
     </section>
 
+    <!-- 利率计算器 -->
+    <section class="section" data-category="calculator" aria-labelledby="calculator-heading">
+      <div class="section-header">
+        <h2 class="section-title" id="calculator-heading"><span class="icon" aria-hidden="true">🧮</span> 利率计算器</h2>
+      </div>
+      <div class="card-grid" role="list">
+        <article class="app-card" data-name="等额本息计算器" data-cat="calculator" role="listitem" onclick="openCalculator('equal-principal-interest')">
+          <div class="card-top">
+            <div class="app-icon bg-blue" aria-hidden="true">📊</div>
+            <div class="app-info">
+              <h3 class="app-name">等额本息计算器</h3>
+              <div class="app-rate">每月还款额固定</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">常用</span>
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <p class="card-desc">输入贷款金额、期限和利率，自动计算每月还款额、总利息和还款计划表。</p>
+        </article>
+        <article class="app-card" data-name="等额本金计算器" data-cat="calculator" role="listitem" onclick="openCalculator('equal-principal')">
+          <div class="card-top">
+            <div class="app-icon bg-green" aria-hidden="true">📈</div>
+            <div class="app-info">
+              <h3 class="app-name">等额本金计算器</h3>
+              <div class="app-rate">逐月递减更省息</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">省息</span>
+          </div>
+          <p class="card-desc">等额本金还款方式，首月还款最高，逐月递减，总利息比等额本息少。</p>
+        </article>
+        <article class="app-card" data-name="提前还款计算器" data-cat="calculator" role="listitem" onclick="openCalculator('prepayment')">
+          <div class="card-top">
+            <div class="app-icon bg-orange" aria-hidden="true">⏩</div>
+            <div class="app-info">
+              <h3 class="app-name">提前还款计算器</h3>
+              <div class="app-rate">省息金额一目了然</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">实用</span>
+          </div>
+          <p class="card-desc">计算提前还款能省多少利息，对比剩余期限利息，帮您决策是否提前还款。</p>
+        </article>
+        <article class="app-card" data-name="LPR利率换算器" data-cat="calculator" role="listitem" onclick="openCalculator('lpr')">
+          <div class="card-top">
+            <div class="app-icon bg-purple" aria-hidden="true">🔃</div>
+            <div class="app-info">
+              <h3 class="app-name">LPR利率换算器</h3>
+              <div class="app-rate">实时LPR基准参考</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-new">实时</span>
+          </div>
+          <p class="card-desc">输入LPR加点值，自动计算实际贷款利率，支持房贷、经营贷多种场景。</p>
+        </article>
+      </div>
+    </section>
+
   </div>
 
   <!-- Sidebar -->
@@ -838,6 +945,235 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 </main>
 
 <!-- Footer -->
+<!-- Calculator Modal -->
+<div id="calcModal" class="calc-modal" aria-hidden="true" role="dialog" aria-labelledby="calcModalTitle">
+  <div class="calc-modal-box">
+    <div class="calc-modal-header">
+      <h3 id="calcModalTitle">利率计算器</h3>
+      <button class="calc-modal-close" aria-label="关闭" onclick="closeCalculator()">&times;</button>
+    </div>
+    <div class="calc-modal-body">
+      <!-- Tab switcher -->
+      <div class="calc-tabs" role="tablist">
+        <button class="calc-tab active" role="tab" aria-selected="true" onclick="switchCalcTab('equal-principal-interest', this)">等额本息</button>
+        <button class="calc-tab" role="tab" aria-selected="false" onclick="switchCalcTab('equal-principal', this)">等额本金</button>
+        <button class="calc-tab" role="tab" aria-selected="false" onclick="switchCalcTab('prepayment', this)">提前还款</button>
+        <button class="calc-tab" role="tab" aria-selected="false" onclick="switchCalcTab('lpr', this)">LPR换算</button>
+      </div>
+
+      <!-- Equal Principal Interest (等额本息) -->
+      <div class="calc-panel" id="panel-equal-principal-interest">
+        <div class="calc-form">
+          <div class="calc-field">
+            <label for="epi-amount">贷款金额（万元）</label>
+            <input type="number" id="epi-amount" value="100" min="1" max="10000" step="1">
+          </div>
+          <div class="calc-field">
+            <label for="epi-rate">年利率（%）</label>
+            <input type="number" id="epi-rate" value="3.6" min="0.1" max="24" step="0.01">
+          </div>
+          <div class="calc-field">
+            <label for="epi-years">贷款期限（年）</label>
+            <select id="epi-years">
+              <option value="1">1年（12期）</option>
+              <option value="3">3年（36期）</option>
+              <option value="5" selected>5年（60期）</option>
+              <option value="10">10年（120期）</option>
+              <option value="15">15年（180期）</option>
+              <option value="20">20年（240期）</option>
+              <option value="25">25年（300期）</option>
+              <option value="30">30年（360期）</option>
+            </select>
+          </div>
+          <button class="calc-btn" onclick="calcEqualPrincipalInterest()">开始计算</button>
+        </div>
+        <div class="calc-result" id="epi-result" style="display:none;">
+          <div class="calc-result-row">
+            <span>每月还款</span>
+            <strong id="epi-monthly">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>还款总额</span>
+            <strong id="epi-total">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>总利息</span>
+            <strong id="epi-interest">0</strong>
+          </div>
+          <div class="calc-schedule-toggle">
+            <button onclick="toggleSchedule('epi')">查看还款明细表 ▼</button>
+          </div>
+          <div class="calc-schedule" id="epi-schedule"></div>
+        </div>
+      </div>
+
+      <!-- Equal Principal (等额本金) -->
+      <div class="calc-panel" id="panel-equal-principal" style="display:none;">
+        <div class="calc-form">
+          <div class="calc-field">
+            <label for="ep-amount">贷款金额（万元）</label>
+            <input type="number" id="ep-amount" value="100" min="1" max="10000" step="1">
+          </div>
+          <div class="calc-field">
+            <label for="ep-rate">年利率（%）</label>
+            <input type="number" id="ep-rate" value="3.6" min="0.1" max="24" step="0.01">
+          </div>
+          <div class="calc-field">
+            <label for="ep-years">贷款期限（年）</label>
+            <select id="ep-years">
+              <option value="1">1年（12期）</option>
+              <option value="3">3年（36期）</option>
+              <option value="5" selected>5年（60期）</option>
+              <option value="10">10年（120期）</option>
+              <option value="15">15年（180期）</option>
+              <option value="20">20年（240期）</option>
+              <option value="25">25年（300期）</option>
+              <option value="30">30年（360期）</option>
+            </select>
+          </div>
+          <button class="calc-btn" onclick="calcEqualPrincipal()">开始计算</button>
+        </div>
+        <div class="calc-result" id="ep-result" style="display:none;">
+          <div class="calc-result-row">
+            <span>首月还款</span>
+            <strong id="ep-first">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>每月递减</span>
+            <strong id="ep-decrease">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>还款总额</span>
+            <strong id="ep-total">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>总利息</span>
+            <strong id="ep-interest">0</strong>
+          </div>
+          <div class="calc-schedule-toggle">
+            <button onclick="toggleSchedule('ep')">查看还款明细表 ▼</button>
+          </div>
+          <div class="calc-schedule" id="ep-schedule"></div>
+        </div>
+      </div>
+
+      <!-- Prepayment (提前还款) -->
+      <div class="calc-panel" id="panel-prepayment" style="display:none;">
+        <div class="calc-form">
+          <div class="calc-field">
+            <label for="pp-amount">贷款金额（万元）</label>
+            <input type="number" id="pp-amount" value="100" min="1" max="10000" step="1">
+          </div>
+          <div class="calc-field">
+            <label for="pp-rate">年利率（%）</label>
+            <input type="number" id="pp-rate" value="3.6" min="0.1" max="24" step="0.01">
+          </div>
+          <div class="calc-field">
+            <label for="pp-years">贷款期限（年）</label>
+            <select id="pp-years">
+              <option value="5">5年</option>
+              <option value="10">10年</option>
+              <option value="15">15年</option>
+              <option value="20" selected>20年</option>
+              <option value="25">25年</option>
+              <option value="30">30年</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label for="pp-elapsed">已还期数（月）</label>
+            <input type="number" id="pp-elapsed" value="24" min="1" max="360" step="1">
+          </div>
+          <div class="calc-field">
+            <label for="pp-type">提前还款方式</label>
+            <select id="pp-type">
+              <option value="partial">部分提前还款（缩短期限）</option>
+              <option value="full">全部提前还清</option>
+            </select>
+          </div>
+          <div class="calc-field" id="pp-partial-field">
+            <label for="pp-partial">部分还款金额（万元）</label>
+            <input type="number" id="pp-partial" value="20" min="1" max="500" step="1">
+          </div>
+          <button class="calc-btn" onclick="calcPrepayment()">开始计算</button>
+        </div>
+        <div class="calc-result" id="pp-result" style="display:none;">
+          <div class="calc-result-row">
+            <span>已付利息</span>
+            <strong id="pp-paid-interest">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>剩余本金</span>
+            <strong id="pp-remaining">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>提前还款可省息</span>
+            <strong id="pp-save" class="calc-highlight">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>新还款期限</span>
+            <strong id="pp-new-term">—</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- LPR (LPR换算) -->
+      <div class="calc-panel" id="panel-lpr" style="display:none;">
+        <div class="calc-form">
+          <div class="calc-field">
+            <label for="lpr-base">LPR基准（%）</label>
+            <select id="lpr-base">
+              <option value="3.1">3.1%（1年期 LPR）</option>
+              <option value="3.6" selected>3.6%（5年期以上 LPR）</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label for="lpr-spread">加点（BP）</label>
+            <input type="number" id="lpr-spread" value="0" min="-100" max="500" step="1">
+            <small style="color:#888;font-size:12px;">1 BP = 0.01%，负值表示减点</small>
+          </div>
+          <div class="calc-field">
+            <label for="lpr-amount">贷款金额（万元）</label>
+            <input type="number" id="lpr-amount" value="100" min="1" max="10000" step="1">
+          </div>
+          <div class="calc-field">
+            <label for="lpr-years">贷款期限（年）</label>
+            <select id="lpr-years">
+              <option value="1">1年</option>
+              <option value="3">3年</option>
+              <option value="5" selected>5年</option>
+              <option value="10">10年</option>
+              <option value="15">15年</option>
+              <option value="20">20年</option>
+              <option value="25">25年</option>
+              <option value="30">30年</option>
+            </select>
+          </div>
+          <button class="calc-btn" onclick="calcLPR()">开始计算</button>
+        </div>
+        <div class="calc-result" id="lpr-result" style="display:none;">
+          <div class="calc-result-row">
+            <span>实际执行利率</span>
+            <strong id="lpr-actual">0%</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>每月还款（等额本息）</span>
+            <strong id="lpr-monthly">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>还款总额</span>
+            <strong id="lpr-total">0</strong>
+          </div>
+          <div class="calc-result-row">
+            <span>总利息</span>
+            <strong id="lpr-interest">0</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-col">
@@ -925,11 +1261,236 @@ function filterCards() {
   if (query && window.gtag) gtag('event', 'search', { search_term: query });
 }
 
-// Ad click tracking (placeholder for analytics)
-function trackAdClick(position) {
-  if (window.gtag) gtag('event', 'ad_click', { ad_position: position });
-  console.log('Ad clicked:', position);
+// Calculator functions
+let currentCalcTab = 'equal-principal-interest';
+
+function openCalculator(type) {
+  const modal = document.getElementById('calcModal');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  switchCalcTab(type, null, true);
 }
+
+function closeCalculator() {
+  const modal = document.getElementById('calcModal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function switchCalcTab(tab, btn, skipAnim) {
+  currentCalcTab = tab;
+  document.querySelectorAll('.calc-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+  } else {
+    document.querySelectorAll('.calc-tab').forEach(t => {
+      if ((tab === 'equal-principal-interest' && t.textContent.includes('等额本息')) ||
+          (tab === 'equal-principal' && t.textContent.includes('等额本金')) ||
+          (tab === 'prepayment' && t.textContent.includes('提前还款')) ||
+          (tab === 'lpr' && t.textContent.includes('LPR'))) {
+        t.classList.add('active');
+        t.setAttribute('aria-selected', 'true');
+      }
+    });
+  }
+  document.querySelectorAll('.calc-panel').forEach(p => p.style.display = 'none');
+  const panel = document.getElementById('panel-' + tab);
+  if (panel) panel.style.display = '';
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCalculator();
+});
+
+// Close modal on backdrop click
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('calcModal');
+  if (modal) {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeCalculator();
+    });
+  }
+});
+
+// ===== Equal Principal Interest (等额本息) =====
+function calcEqualPrincipalInterest() {
+  const amount = parseFloat(document.getElementById('epi-amount').value) * 10000;
+  const rate = parseFloat(document.getElementById('epi-rate').value) / 100 / 12;
+  const months = parseInt(document.getElementById('epi-years').value) * 12;
+  if (!amount || !rate || !months) return;
+
+  const monthly = amount * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1);
+  const total = monthly * months;
+  const interest = total - amount;
+
+  document.getElementById('epi-monthly').textContent = monthly.toFixed(2) + ' 元';
+  document.getElementById('epi-total').textContent = (total / 10000).toFixed(2) + ' 万元';
+  document.getElementById('epi-interest').textContent = (interest / 10000).toFixed(2) + ' 万元';
+  document.getElementById('epi-result').style.display = '';
+
+  // Build schedule
+  let html = '<table><thead><tr><th>期数</th><th>月供</th><th>本金</th><th>利息</th><th>剩余本金</th></tr></thead><tbody>';
+  let remain = amount;
+  for (let i = 1; i <= Math.min(months, 120); i++) {
+    const interestPart = remain * rate;
+    const principalPart = monthly - interestPart;
+    remain -= principalPart;
+    if (remain < 0) remain = 0;
+    html += '<tr><td>' + i + '</td><td>' + monthly.toFixed(2) + '</td><td>' + principalPart.toFixed(2) + '</td><td>' + interestPart.toFixed(2) + '</td><td>' + remain.toFixed(2) + '</td></tr>';
+  }
+  if (months > 120) html += '<tr><td colspan="5" style="text-align:center;color:#999;">... 共 ' + months + ' 期，仅展示前120期 ...</td></tr>';
+  html += '</tbody></table>';
+  document.getElementById('epi-schedule').innerHTML = html;
+  document.getElementById('epi-schedule').style.display = 'none';
+}
+
+// ===== Equal Principal (等额本金) =====
+function calcEqualPrincipal() {
+  const amount = parseFloat(document.getElementById('ep-amount').value) * 10000;
+  const rate = parseFloat(document.getElementById('ep-rate').value) / 100 / 12;
+  const months = parseInt(document.getElementById('ep-years').value) * 12;
+  if (!amount || !rate || !months) return;
+
+  const principalPart = amount / months;
+  const firstMonthly = principalPart + amount * rate;
+  let totalInterest = 0;
+  let remain = amount;
+  let scheduleHtml = '<table><thead><tr><th>期数</th><th>月供</th><th>本金</th><th>利息</th><th>剩余本金</th></tr></thead><tbody>';
+
+  for (let i = 1; i <= Math.min(months, 120); i++) {
+    const interestPart = remain * rate;
+    const monthly = principalPart + interestPart;
+    totalInterest += interestPart;
+    remain -= principalPart;
+    if (remain < 0) remain = 0;
+    const decrease = (i === 1) ? 0 : (amount * rate / months).toFixed(2);
+    scheduleHtml += '<tr><td>' + i + '</td><td>' + monthly.toFixed(2) + '</td><td>' + principalPart.toFixed(2) + '</td><td>' + interestPart.toFixed(2) + '</td><td>' + remain.toFixed(2) + '</td></tr>';
+  }
+  if (months > 120) scheduleHtml += '<tr><td colspan="5" style="text-align:center;color:#999;">... 共 ' + months + ' 期，仅展示前120期 ...</td></tr>';
+  scheduleHtml += '</tbody></table>';
+
+  const total = amount + totalInterest;
+  const decrease = (amount * rate / months).toFixed(2);
+
+  document.getElementById('ep-first').textContent = firstMonthly.toFixed(2) + ' 元';
+  document.getElementById('ep-decrease').textContent = decrease + ' 元/月';
+  document.getElementById('ep-total').textContent = (total / 10000).toFixed(2) + ' 万元';
+  document.getElementById('ep-interest').textContent = (totalInterest / 10000).toFixed(2) + ' 万元';
+  document.getElementById('ep-result').style.display = '';
+  document.getElementById('ep-schedule').innerHTML = scheduleHtml;
+  document.getElementById('ep-schedule').style.display = 'none';
+}
+
+// ===== Prepayment (提前还款) =====
+function calcPrepayment() {
+  const amount = parseFloat(document.getElementById('pp-amount').value) * 10000;
+  const rate = parseFloat(document.getElementById('pp-rate').value) / 100 / 12;
+  const totalMonths = parseInt(document.getElementById('pp-years').value) * 12;
+  const elapsed = parseInt(document.getElementById('pp-elapsed').value);
+  const type = document.getElementById('pp-type').value;
+  const partial = parseFloat(document.getElementById('pp-partial')?.value || 0) * 10000;
+  if (!amount || !rate || !totalMonths || !elapsed) return;
+
+  // Calculate original schedule
+  const monthly = amount * rate * Math.pow(1 + rate, totalMonths) / (Math.pow(1 + rate, totalMonths) - 1);
+  let remain = amount;
+  let paidInterest = 0;
+  for (let i = 1; i <= elapsed; i++) {
+    const interestPart = remain * rate;
+    const principalPart = monthly - interestPart;
+    paidInterest += interestPart;
+    remain -= principalPart;
+  }
+
+  let saveInterest = 0;
+  let newTerm = '—';
+
+  if (type === 'full') {
+    saveInterest = remain * rate * (totalMonths - elapsed); // approx
+    // Recalculate more precisely
+    let tempRemain = amount;
+    let totalInterestOriginal = 0;
+    for (let i = 1; i <= totalMonths; i++) {
+      const ip = tempRemain * rate;
+      totalInterestOriginal += ip;
+      tempRemain -= (monthly - ip);
+    }
+    saveInterest = totalInterestOriginal - paidInterest;
+    newTerm = '立即还清';
+  } else {
+    // Partial prepayment: reduce principal, recalc term
+    remain -= partial;
+    if (remain > 0) {
+      const newMonths = Math.ceil(-Math.log(1 - remain * rate / monthly) / Math.log(1 + rate));
+      newTerm = newMonths + ' 个月（缩短 ' + (totalMonths - elapsed - newMonths) + ' 期）';
+      // Approx save
+      let totalIntAfter = 0;
+      let r = remain;
+      for (let i = 0; i < newMonths; i++) {
+        totalIntAfter += r * rate;
+        r -= (monthly - r * rate);
+        if (r <= 0) break;
+      }
+      saveInterest = (totalMonths - elapsed - newMonths) * monthly - totalIntAfter;
+    }
+  }
+
+  document.getElementById('pp-paid-interest').textContent = (paidInterest / 10000).toFixed(2) + ' 万元';
+  document.getElementById('pp-remaining').textContent = (remain / 10000).toFixed(2) + ' 万元';
+  document.getElementById('pp-save').textContent = '省 ' + (saveInterest / 10000).toFixed(2) + ' 万元';
+  document.getElementById('pp-new-term').textContent = newTerm;
+  document.getElementById('pp-result').style.display = '';
+}
+
+// ===== LPR Converter =====
+function calcLPR() {
+  const base = parseFloat(document.getElementById('lpr-base').value);
+  const spread = parseFloat(document.getElementById('lpr-spread').value) / 100;
+  const amount = parseFloat(document.getElementById('lpr-amount').value) * 10000;
+  const years = parseInt(document.getElementById('lpr-years').value);
+  const actualRate = base + spread;
+  const months = years * 12;
+  const monthlyRate = actualRate / 100 / 12;
+
+  const monthly = amount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+  const total = monthly * months;
+  const interest = total - amount;
+
+  document.getElementById('lpr-actual').textContent = actualRate.toFixed(2) + '%';
+  document.getElementById('lpr-monthly').textContent = monthly.toFixed(2) + ' 元';
+  document.getElementById('lpr-total').textContent = (total / 10000).toFixed(2) + ' 万元';
+  document.getElementById('lpr-interest').textContent = (interest / 10000).toFixed(2) + ' 万元';
+  document.getElementById('lpr-result').style.display = '';
+}
+
+// ===== Toggle Schedule =====
+function toggleSchedule(type) {
+  const el = document.getElementById(type + '-schedule');
+  if (el.style.display === 'none' || !el.style.display) {
+    el.style.display = '';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// Show/hide partial field in prepayment
+document.addEventListener('DOMContentLoaded', () => {
+  const ppType = document.getElementById('pp-type');
+  if (ppType) {
+    ppType.addEventListener('change', function() {
+      const field = document.getElementById('pp-partial-field');
+      if (field) field.style.display = this.value === 'full' ? 'none' : '';
+    });
+  }
+});
+
 </script>
 
 </body>
