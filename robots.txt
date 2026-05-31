@@ -1,0 +1,24 @@
+# robots.txt for 贷款导航
+# https://2026-05-31-21-59-31.vercel.app
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://2026-05-31-21-59-31.vercel.app/sitemap.xml
+
+# Baidu specific
+User-agent: Baiduspider
+Allow: /
+
+# 360Spider
+User-agent: 360Spider
+Allow: /
+
+# Sogou
+User-agent: Sogou web spider
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
