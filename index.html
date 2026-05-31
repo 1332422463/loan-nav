@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贷款导航 - 一站式贷款平台导航</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%); padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+.header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; }
+.logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.logo-text { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+.logo-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+.search-box { display: flex; align-items: center; background: rgba(255,255,255,0.95); border-radius: 24px; padding: 8px 16px; width: 360px; max-width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.search-box input { border: none; outline: none; background: transparent; flex: 1; font-size: 14px; color: #333; }
+.search-box input::placeholder { color: #aaa; }
+.search-btn { background: none; border: none; cursor: pointer; font-size: 18px; color: #4a90d9; padding: 0 4px; }
+
+/* Top Ad Banner */
+.top-ad { max-width: 1200px; margin: 20px auto 0; padding: 0 24px; }
+.ad-banner { background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%); border-radius: 12px; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; color: #fff; position: relative; overflow: hidden; }
+.ad-banner::after { content: "广告"; position: absolute; top: 8px; right: 12px; font-size: 10px; background: rgba(0,0,0,0.15); padding: 2px 8px; border-radius: 4px; }
+.ad-banner h3 { font-size: 22px; font-weight: 600; }
+.ad-banner p { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+.ad-banner .ad-btn { background: #fff; color: #ff6b6b; border: none; padding: 10px 28px; border-radius: 24px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+.ad-banner .ad-btn:hover { transform: scale(1.05); }
+
+/* Stats Bar */
+.stats-bar { max-width: 1200px; margin: 20px auto; padding: 0 24px; display: flex; gap: 16px; flex-wrap: wrap; }
+.stat-item { flex: 1; min-width: 160px; background: #fff; border-radius: 10px; padding: 16px 20px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.stat-num { font-size: 26px; font-weight: 700; color: #4a90d9; }
+.stat-label { font-size: 13px; color: #888; margin-top: 2px; }
+
+/* Category Navigation */
+.cat-nav { max-width: 1200px; margin: 20px auto; padding: 0 24px; }
+.cat-nav-inner { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.cat-nav-inner h3 { font-size: 14px; color: #999; font-weight: 500; margin-bottom: 12px; }
+.cat-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.cat-tag { padding: 8px 20px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: all 0.2s; border: 1px solid #e8e8e8; color: #555; text-decoration: none; background: #fff; }
+.cat-tag:hover { border-color: #4a90d9; color: #4a90d9; }
+.cat-tag.active { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+
+/* Main Content */
+.main { max-width: 1200px; margin: 20px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+/* Card Grid */
+.section { margin-bottom: 24px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 600; color: #333; }
+.section-title .icon { font-size: 20px; }
+.section-more { font-size: 13px; color: #4a90d9; cursor: pointer; text-decoration: none; }
+.section-more:hover { text-decoration: underline; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+/* App Card */
+.app-card { background: #fff; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.25s; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid transparent; position: relative; }
+.app-card:hover { box-shadow: 0 8px 24px rgba(74,144,217,0.12); border-color: #4a90d9; transform: translateY(-2px); }
+.card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.app-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.app-info { flex: 1; min-width: 0; }
+.app-name { font-size: 16px; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-rate { font-size: 12px; color: #4a90d9; margin-top: 2px; font-weight: 500; }
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.card-tag { font-size: 11px; padding: 2px 10px; border-radius: 10px; }
+.card-desc { font-size: 13px; color: #888; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-badge { position: absolute; top: 12px; right: 12px; font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+
+/* Colors for icons */
+.bg-blue { background: linear-gradient(135deg, #e8f4fd, #d4ecfc); }
+.bg-green { background: linear-gradient(135deg, #e8f8f0, #d0f0e0); }
+.bg-orange { background: linear-gradient(135deg, #fff4e6, #ffe8cc); }
+.bg-purple { background: linear-gradient(135deg, #f0e8ff, #e4d4fc); }
+.bg-red { background: linear-gradient(135deg, #ffe8e8, #ffd4d4); }
+.bg-teal { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); }
+.bg-pink { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+.bg-indigo { background: linear-gradient(135deg, #e8eaf6, #c5cae9); }
+.tag-hot { background: #fff1f0; color: #ff4d4f; }
+.tag-new { background: #e6f7ff; color: #1890ff; }
+.tag-rec { background: #fff7e6; color: #fa8c16; }
+.tag-fast { background: #f6ffed; color: #52c41a; }
+.badge-hot { background: linear-gradient(135deg, #ff4d4f, #ff7875); color: #fff; }
+.badge-rec { background: linear-gradient(135deg, #fa8c16, #ffa940); color: #fff; }
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+.side-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.side-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+
+/* Side Ad */
+.side-ad { border: 1px dashed #e0e0e0; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #bbb; font-size: 13px; gap: 8px; position: relative; }
+.side-ad::after { content: "广告位"; position: absolute; bottom: 12px; font-size: 11px; color: #ccc; }
+
+/* Ranking */
+.rank-list { list-style: none; }
+.rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+.rank-item:last-child { border-bottom: none; }
+.rank-num { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.rank-1 { background: linear-gradient(135deg, #ff4d4f, #ff7875); color: #fff; }
+.rank-2 { background: linear-gradient(135deg, #fa8c16, #ffa940); color: #fff; }
+.rank-3 { background: linear-gradient(135deg, #fadb14, #ffe58f); color: #fff; }
+.rank-default { background: #f0f0f0; color: #999; }
+.rank-info { flex: 1; min-width: 0; }
+.rank-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-desc { font-size: 11px; color: #aaa; margin-top: 1px; }
+.rank-heat { font-size: 12px; color: #ff4d4f; font-weight: 500; flex-shrink: 0; }
+
+/* Tips */
+.tips-list { list-style: none; }
+.tips-item { padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; color: #666; display: flex; align-items: flex-start; gap: 8px; line-height: 1.6; }
+.tips-item:last-child { border-bottom: none; }
+.tips-item::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #4a90d9; flex-shrink: 0; margin-top: 8px; }
+
+/* Mid Page Ad */
+.mid-ad { grid-column: 1 / -1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; color: #fff; position: relative; overflow: hidden; }
+.mid-ad::after { content: "广告"; position: absolute; top: 8px; right: 12px; font-size: 10px; background: rgba(0,0,0,0.15); padding: 2px 8px; border-radius: 4px; }
+.mid-ad h3 { font-size: 20px; font-weight: 600; }
+.mid-ad p { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+.mid-ad .ad-btn { background: #fff; color: #764ba2; border: none; padding: 10px 28px; border-radius: 24px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+.mid-ad .ad-btn:hover { transform: scale(1.05); }
+
+/* Footer */
+.footer { background: #fff; margin-top: 40px; padding: 32px 24px; border-top: 1px solid #eee; }
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+.footer-col h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #333; }
+.footer-col a { display: block; font-size: 13px; color: #888; text-decoration: none; margin-bottom: 6px; }
+.footer-col a:hover { color: #4a90d9; }
+.footer-bottom { max-width: 1200px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid #f0f0f0; text-align: center; font-size: 12px; color: #bbb; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main { grid-template-columns: 1fr; }
+  .search-box { width: 100%; }
+  .header-inner { flex-direction: column; }
+  .ad-banner, .mid-ad { flex-direction: column; text-align: center; gap: 16px; }
+  .stats-bar { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">💰</div>
+      <div>
+        <div class="logo-text">贷款导航</div>
+        <div class="logo-sub">安全 · 便捷 · 省心</div>
+      </div>
+    </a>
+    <div class="search-box">
+      <button class="search-btn">🔍</button>
+      <input type="text" id="searchInput" placeholder="搜索贷款平台、产品名称..." oninput="filterCards()">
+    </div>
+  </div>
+</div>
+
+<!-- Top Ad Banner -->
+<div class="top-ad">
+  <div class="ad-banner">
+    <div>
+      <h3>🎉 新用户专享：首借免息30天</h3>
+      <p>限时活动，最高可借20万，极速放款，最快3分钟到账</p>
+    </div>
+    <button class="ad-btn">立即申请 →</button>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">128+</div><div class="stat-label">收录平台</div></div>
+  <div class="stat-item"><div class="stat-num">6.8万</div><div class="stat-label">今日访问</div></div>
+  <div class="stat-item"><div class="stat-num">98.6%</div><div class="stat-label">好评率</div></div>
+  <div class="stat-item"><div class="stat-num">7×24h</div><div class="stat-label">在线服务</div></div>
+</div>
+
+<!-- Category Nav -->
+<div class="cat-nav">
+  <div class="cat-nav-inner">
+    <h3>📂 全部分类</h3>
+    <div class="cat-tags">
+      <span class="cat-tag active" onclick="filterCategory('all', this)">全部</span>
+      <span class="cat-tag" onclick="filterCategory('credit', this)">信用贷款</span>
+      <span class="cat-tag" onclick="filterCategory('mortgage', this)">抵押贷款</span>
+      <span class="cat-tag" onclick="filterCategory('consumer', this)">消费金融</span>
+      <span class="cat-tag" onclick="filterCategory('house', this)">房贷</span>
+      <span class="cat-tag" onclick="filterCategory('car', this)">车贷</span>
+      <span class="cat-tag" onclick="filterCategory('micro', this)">小额贷款</span>
+      <span class="cat-tag" onclick="filterCategory('business', this)">企业贷款</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Left Content -->
+  <div class="content">
+
+    <!-- 信用贷款 -->
+    <div class="section" data-category="credit">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">💳</span> 信用贷款</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="借呗" data-cat="credit">
+          <span class="card-badge badge-hot">HOT</span>
+          <div class="card-top">
+            <div class="app-icon bg-blue">🏦</div>
+            <div class="app-info">
+              <div class="app-name">借呗</div>
+              <div class="app-rate">年利率 3.6% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+            <span class="card-tag tag-fast">秒批</span>
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <div class="card-desc">支付宝旗下信用贷款产品，额度最高30万，按日计息，随借随还，无提前还款手续费。</div>
+        </div>
+        <div class="app-card" data-name="微粒贷" data-cat="credit">
+          <span class="card-badge badge-hot">HOT</span>
+          <div class="card-top">
+            <div class="app-icon bg-green">💚</div>
+            <div class="app-info">
+              <div class="app-name">微粒贷</div>
+              <div class="app-rate">年利率 3.2% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+            <span class="card-tag tag-fast">极速</span>
+          </div>
+          <div class="card-desc">微信旗下信贷产品，额度最高20万，最快5分钟放款，支持提前还款免手续费。</div>
+        </div>
+        <div class="app-card" data-name="京东金条" data-cat="credit">
+          <div class="card-top">
+            <div class="app-icon bg-red">🐕</div>
+            <div class="app-info">
+              <div class="app-name">京东金条</div>
+              <div class="app-rate">年利率 4.5% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-new">新品</span>
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <div class="card-desc">京东金融旗下现金借贷产品，额度最高20万，最快30秒审批，智能匹配最优利率。</div>
+        </div>
+        <div class="app-card" data-name="度小满" data-cat="credit">
+          <div class="card-top">
+            <div class="app-icon bg-blue">🔍</div>
+            <div class="app-info">
+              <div class="app-name">度小满</div>
+              <div class="app-rate">年利率 3.8% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">秒到账</span>
+          </div>
+          <div class="card-desc">百度旗下信贷平台，额度最高20万，AI智能风控，最快1分钟放款。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 消费金融 -->
+    <div class="section" data-category="consumer">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">🛒</span> 消费金融</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="花呗" data-cat="consumer">
+          <span class="card-badge badge-rec">荐</span>
+          <div class="card-top">
+            <div class="app-icon bg-blue">🌸</div>
+            <div class="app-info">
+              <div class="app-name">花呗</div>
+              <div class="app-rate">免息期最长41天</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <div class="card-desc">支付宝消费信贷，先消费后还款，支持线上线下全场景使用，额度最高5万。</div>
+        </div>
+        <div class="app-card" data-name="白条" data-cat="consumer">
+          <div class="card-top">
+            <div class="app-icon bg-red">⬜</div>
+            <div class="app-info">
+              <div class="app-name">京东白条</div>
+              <div class="app-rate">免息期最长30天</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+          </div>
+          <div class="card-desc">京东购物先享后付，支持分期付款，额度最高1.5万，可在京东商城及合作商户使用。</div>
+        </div>
+        <div class="app-card" data-name="招联金融" data-cat="consumer">
+          <div class="card-top">
+            <div class="app-icon bg-orange">🔶</div>
+            <div class="app-info">
+              <div class="app-name">招联金融</div>
+              <div class="app-rate">年利率 5.4% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">快速审批</span>
+          </div>
+          <div class="card-desc">招商银行与中国联通合资持牌消费金融公司，额度最高20万，正规持牌安全可靠。</div>
+        </div>
+        <div class="app-card" data-name="马上消费" data-cat="consumer">
+          <div class="card-top">
+            <div class="app-icon bg-purple">⚡</div>
+            <div class="app-info">
+              <div class="app-name">马上消费</div>
+              <div class="app-rate">年利率 6.0% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-new">新品</span>
+          </div>
+          <div class="card-desc">持牌消费金融机构，提供安逸花等消费分期产品，额度最高5万，支持多种还款方式。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mid Page Ad -->
+    <div class="mid-ad">
+      <div>
+        <h3>📊 年终贷款利率优惠活动</h3>
+        <p>多家银行联合放贷，最低年化利率2.8%，额度高达50万</p>
+      </div>
+      <button class="ad-btn">立即查看 →</button>
+    </div>
+
+    <!-- 小额贷款 -->
+    <div class="section" data-category="micro">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">💵</span> 小额贷款</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="360借条" data-cat="micro">
+          <div class="card-top">
+            <div class="app-icon bg-green">🛡️</div>
+            <div class="app-info">
+              <div class="app-name">360借条</div>
+              <div class="app-rate">年利率 5.0% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">极速</span>
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <div class="card-desc">360数科旗下小额信贷产品，额度最高20万，最快5分钟到账，全程线上操作。</div>
+        </div>
+        <div class="app-card" data-name="美团借钱" data-cat="micro">
+          <div class="card-top">
+            <div class="app-icon bg-yellow">🟡</div>
+            <div class="app-info">
+              <div class="app-name">美团借钱</div>
+              <div class="app-rate">年利率 7.2% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-new">新品</span>
+          </div>
+          <div class="card-desc">美团旗下借贷服务，额度最高15万，依托美团生态大数据风控，审批快放款快。</div>
+        </div>
+        <div class="app-card" data-name="滴滴借款" data-cat="micro">
+          <div class="card-top">
+            <div class="app-icon bg-orange">🚕</div>
+            <div class="app-info">
+              <div class="app-name">滴滴借款</div>
+              <div class="app-rate">年利率 6.5% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">快速</span>
+          </div>
+          <div class="card-desc">滴滴出行旗下金融产品，额度最高10万，为出行用户和司机提供便捷信贷服务。</div>
+        </div>
+        <div class="app-card" data-name="新浪借钱" data-cat="micro">
+          <div class="card-top">
+            <div class="app-icon bg-red">🐦</div>
+            <div class="app-info">
+              <div class="app-name">新浪借钱</div>
+              <div class="app-rate">年利率 6.0% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">靠谱</span>
+          </div>
+          <div class="card-desc">新浪微博旗下金融借贷平台，额度最高10万，凭身份证即可申请，门槛低放款快。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 抵押贷款 -->
+    <div class="section" data-category="mortgage">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">🏠</span> 抵押贷款</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="平安普惠" data-cat="mortgage">
+          <span class="card-badge badge-rec">荐</span>
+          <div class="card-top">
+            <div class="app-icon bg-orange">⚖️</div>
+            <div class="app-info">
+              <div class="app-name">平安普惠</div>
+              <div class="app-rate">年利率 4.8% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+            <span class="card-tag tag-rec">大额</span>
+          </div>
+          <div class="card-desc">平安集团旗下融资服务平台，支持房产/车辆抵押，额度最高100万，全国覆盖。</div>
+        </div>
+        <div class="app-card" data-name="陆金所" data-cat="mortgage">
+          <div class="card-top">
+            <div class="app-icon bg-blue">🏛️</div>
+            <div class="app-info">
+              <div class="app-name">陆金所</div>
+              <div class="app-rate">年利率 4.5% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">专业</span>
+          </div>
+          <div class="card-desc">中国平安旗下综合财富管理平台，提供抵押贷款、无抵押贷款等多种融资方案。</div>
+        </div>
+        <div class="app-card" data-name="宜信" data-cat="mortgage">
+          <div class="card-top">
+            <div class="app-icon bg-teal">🏢</div>
+            <div class="app-info">
+              <div class="app-name">宜信</div>
+              <div class="app-rate">年利率 5.2% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">老牌</span>
+          </div>
+          <div class="card-desc">宜信公司旗下信贷平台，支持房产抵押大额贷款，额度最高500万，服务专业可靠。</div>
+        </div>
+        <div class="app-card" data-name="房抵贷" data-cat="mortgage">
+          <div class="card-top">
+            <div class="app-icon bg-indigo">🏗️</div>
+            <div class="app-info">
+              <div class="app-name">房抵贷</div>
+              <div class="app-rate">年利率 3.8% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">低息</span>
+          </div>
+          <div class="card-desc">房产抵押贷款平台，评估房产价值后最高可贷7成，利率低额度高，适合大额资金需求。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 房贷 -->
+    <div class="section" data-category="house">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">🏡</span> 房贷</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="公积金贷款计算器" data-cat="house">
+          <div class="card-top">
+            <div class="app-icon bg-green">🧮</div>
+            <div class="app-info">
+              <div class="app-name">公积金贷款计算器</div>
+              <div class="app-rate">利率 2.85% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">工具</span>
+          </div>
+          <div class="card-desc">在线计算公积金贷款额度、月供、利息，支持等额本息和等额本金两种还款方式。</div>
+        </div>
+        <div class="app-card" data-name="商业房贷" data-cat="house">
+          <div class="card-top">
+            <div class="app-icon bg-blue">🏦</div>
+            <div class="app-info">
+              <div class="app-name">商业房贷</div>
+              <div class="app-rate">利率 3.1% 起（LPR）</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+          </div>
+          <div class="card-desc">各大银行商业住房贷款产品对比，实时更新最新LPR利率，支持在线申请和预审。</div>
+        </div>
+        <div class="app-card" data-name="组合贷款" data-cat="house">
+          <div class="card-top">
+            <div class="app-icon bg-purple">📊</div>
+            <div class="app-info">
+              <div class="app-name">组合贷款</div>
+              <div class="app-rate">利率 2.85%~3.1%</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">省息</span>
+          </div>
+          <div class="card-desc">公积金+商业贷款组合方案，最大化利用公积金低息额度，降低整体贷款成本。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 车贷 -->
+    <div class="section" data-category="car">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">🚗</span> 车贷</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="平安车贷" data-cat="car">
+          <div class="card-top">
+            <div class="app-icon bg-orange">🚙</div>
+            <div class="app-info">
+              <div class="app-name">平安车贷</div>
+              <div class="app-rate">年利率 3.8% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-fast">极速审批</span>
+          </div>
+          <div class="card-desc">平安银行车贷产品，新车二手车均可申请，额度最高50万，最快当天审批通过。</div>
+        </div>
+        <div class="app-card" data-name="一汽金融" data-cat="car">
+          <div class="card-top">
+            <div class="app-icon bg-blue">🚘</div>
+            <div class="app-info">
+              <div class="app-name">一汽金融</div>
+              <div class="app-rate">年利率 2.9% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">厂商贴息</span>
+          </div>
+          <div class="card-desc">一汽集团旗下汽车金融公司，购买一汽品牌车型可享超低贴息利率，手续简便。</div>
+        </div>
+        <div class="app-card" data-name="上汽通用车贷" data-cat="car">
+          <div class="card-top">
+            <div class="app-icon bg-indigo">🏎️</div>
+            <div class="app-info">
+              <div class="app-name">上汽通用车贷</div>
+              <div class="app-rate">年利率 3.5% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">推荐</span>
+          </div>
+          <div class="card-desc">上汽通用汽车金融，覆盖别克、雪佛兰等品牌，灵活分期方案，首付最低20%起。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 企业贷款 -->
+    <div class="section" data-category="business">
+      <div class="section-header">
+        <div class="section-title"><span class="icon">🏢</span> 企业贷款</div>
+        <a class="section-more" href="#">查看更多 ›</a>
+      </div>
+      <div class="card-grid">
+        <div class="app-card" data-name="网商银行" data-cat="business">
+          <span class="card-badge badge-hot">HOT</span>
+          <div class="card-top">
+            <div class="app-icon bg-orange">🌐</div>
+            <div class="app-info">
+              <div class="app-name">网商银行</div>
+              <div class="app-rate">日息万2 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+            <span class="card-tag tag-fast">秒批</span>
+          </div>
+          <div class="card-desc">蚂蚁集团旗下银行，专注小微企业贷款，额度最高200万，纯信用免抵押，3分钟放款。</div>
+        </div>
+        <div class="app-card" data-name="微众银行" data-cat="business">
+          <div class="card-top">
+            <div class="app-icon bg-green">🏦</div>
+            <div class="app-info">
+              <div class="app-name">微众银行·微业贷</div>
+              <div class="app-rate">年利率 3.6% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-hot">热门</span>
+          </div>
+          <div class="card-desc">腾讯旗下微众银行企业贷款产品，额度最高500万，纯线上申请，随借随还。</div>
+        </div>
+        <div class="app-card" data-name="建设银行小微贷" data-cat="business">
+          <div class="card-top">
+            <div class="app-icon bg-blue">🏛️</div>
+            <div class="app-info">
+              <div class="app-name">建设银行·小微快贷</div>
+              <div class="app-rate">年利率 3.5% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-rec">低息</span>
+          </div>
+          <div class="card-desc">建设银行小微企业专属贷款，基于纳税数据授信，额度最高300万，利率优惠。</div>
+        </div>
+        <div class="app-card" data-name="渣打银行企业贷" data-cat="business">
+          <div class="card-top">
+            <div class="app-icon bg-teal">🌍</div>
+            <div class="app-info">
+              <div class="app-name">渣打银行企业贷</div>
+              <div class="app-rate">年利率 4.0% 起</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag tag-new">外企专属</span>
+          </div>
+          <div class="card-desc">渣打银行为中小企业提供无抵押信用贷款，额度最高200万，适合外贸及跨境企业。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <!-- Side Ad 1 -->
+    <div class="side-card">
+      <h4>📢 推荐位</h4>
+      <div class="side-ad" style="min-height:200px; background: linear-gradient(135deg, #e8f4fd, #d4ecfc); border: 1px dashed #b8d8f0;">
+        <span style="font-size:32px;">🏷️</span>
+        <span style="color:#4a90d9;">广告位招租</span>
+        <span style="font-size:11px;">300×200 px</span>
+      </div>
+    </div>
+
+    <!-- Hot Ranking -->
+    <div class="side-card">
+      <h4>🔥 热搜榜</h4>
+      <ul class="rank-list">
+        <li class="rank-item">
+          <span class="rank-num rank-1">1</span>
+          <div class="rank-info"><div class="rank-name">借呗</div><div class="rank-desc">日息万2~万5</div></div>
+          <span class="rank-heat">🔥 9.8万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-2">2</span>
+          <div class="rank-info"><div class="rank-name">微粒贷</div><div class="rank-desc">日息万2~万5</div></div>
+          <span class="rank-heat">🔥 8.2万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-3">3</span>
+          <div class="rank-info"><div class="rank-name">网商银行</div><div class="rank-desc">企业最高200万</div></div>
+          <span class="rank-heat">🔥 7.5万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-default">4</span>
+          <div class="rank-info"><div class="rank-name">京东金条</div><div class="rank-desc">年利率4.5%起</div></div>
+          <span class="rank-heat">6.3万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-default">5</span>
+          <div class="rank-info"><div class="rank-name">360借条</div><div class="rank-desc">额度最高20万</div></div>
+          <span class="rank-heat">5.8万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-default">6</span>
+          <div class="rank-info"><div class="rank-name">平安普惠</div><div class="rank-desc">额度最高100万</div></div>
+          <span class="rank-heat">5.1万</span>
+        </li>
+        <li class="rank-item">
+          <span class="rank-num rank-default">7</span>
+          <div class="rank-info"><div class="rank-name">花呗</div><div class="rank-desc">免息最长41天</div></div>
+          <span class="rank-heat">4.9万</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Side Ad 2 -->
+    <div class="side-card">
+      <h4>📢 侧边广告</h4>
+      <div class="side-ad" style="min-height:250px; background: linear-gradient(135deg, #fff4e6, #ffe8cc); border: 1px dashed #f0d8b0;">
+        <span style="font-size:32px;">📣</span>
+        <span style="color:#fa8c16;">广告位招租</span>
+        <span style="font-size:11px;">260×250 px</span>
+      </div>
+    </div>
+
+    <!-- Safety Tips -->
+    <div class="side-card">
+      <h4>🛡️ 借贷安全提示</h4>
+      <ul class="tips-list">
+        <li class="tips-item">选择持牌正规金融机构，远离非法网贷</li>
+        <li class="tips-item">认真阅读借款合同，了解利率和还款方式</li>
+        <li class="tips-item">切勿将身份证、银行卡借给他人使用</li>
+        <li class="tips-item">警惕"零门槛""无抵押""秒到账"等夸大宣传</li>
+        <li class="tips-item">合理借贷量入为出，避免过度负债</li>
+      </ul>
+    </div>
+
+    <!-- Side Ad 3 -->
+    <div class="side-card">
+      <h4>📢 合作推广</h4>
+      <div class="side-ad" style="min-height:180px; background: linear-gradient(135deg, #f0e8ff, #e4d4fc); border: 1px dashed #d0c0e8;">
+        <span style="font-size:32px;">🤝</span>
+        <span style="color:#7c3aed;">广告位招租</span>
+        <span style="font-size:11px;">260×180 px</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>关于我们</h4>
+      <a href="#">平台介绍</a>
+      <a href="#">联系我们</a>
+      <a href="#">加入我们</a>
+      <a href="#">商务合作</a>
+    </div>
+    <div class="footer-col">
+      <h4>帮助中心</h4>
+      <a href="#">新手指南</a>
+      <a href="#">常见问题</a>
+      <a href="#">意见反馈</a>
+      <a href="#">利率说明</a>
+    </div>
+    <div class="footer-col">
+      <h4>法律声明</h4>
+      <a href="#">用户协议</a>
+      <a href="#">隐私政策</a>
+      <a href="#">免责声明</a>
+      <a href="#">免责声明</a>
+    </div>
+    <div class="footer-col">
+      <h4>友情提示</h4>
+      <a href="#">借贷需谨慎</a>
+      <a href="#">远离非法集资</a>
+      <a href="#">保护个人信息</a>
+      <a href="#">理性消费</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>⚠️ 本站仅提供贷款信息导航服务，不直接提供贷款。贷款有风险，借款需谨慎，请根据自身能力合理借贷。</p>
+    <p style="margin-top: 8px;">© 2026 贷款导航 All Rights Reserved. | 粤ICP备XXXXXXXX号</p>
+  </div>
+</div>
+
+<script>
+// Category filter
+function filterCategory(cat, el) {
+  document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  document.querySelectorAll('.section').forEach(section => {
+    if (cat === 'all' || section.dataset.category === cat) {
+      section.style.display = '';
+    } else {
+      section.style.display = 'none';
+    }
+  });
+}
+
+// Search filter
+function filterCards() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.app-card').forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+    if (name.includes(query) || desc.includes(query)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Show all sections when searching
+  if (query) {
+    document.querySelectorAll('.section').forEach(s => s.style.display = '');
+    document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+    document.querySelector('.cat-tag').classList.add('active');
+  }
+}
+</script>
+</body>
+</html>
