@@ -1369,6 +1369,63 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 </footer>
 
 <script>
+// ===== 推广链接配置（拿到联盟推广链接后替换此处） =====
+var AFF_ID = 'YOUR_AFF_ID'; // 替换为融360/好贷联盟的推广ID
+
+var productLinks = {
+  // 信用贷款
+  '借呗': 'https://render.alipay.com/p/s/i/?scheme=alipays%3A%2F%2Fplatformapi%2Fstartapp%3FappId%3D20000056',
+  '微粒贷': 'https://w.webank.com/',
+  '京东金条': 'https://m.jr.jd.com/btfin/btgold/index.html',
+  '度小满': 'https://www.duxiaoman.com/',
+  // 消费金融
+  '花呗': 'https://render.alipay.com/p/s/i/?scheme=alipays%3A%2F%2Fplatformapi%2Fstartapp%3FappId%3D20000056%26url%3D%252Fwww%252Fhuabei%252Findex.html',
+  '京东白条': 'https://m.jr.jd.com/btfin/btwhitestrip/index.html',
+  '招联金融': 'https://www.mucfc.com/',
+  '马上消费': 'https://www.msxf.com/',
+  // 小额贷款
+  '360借条': 'https://www.360jie.com.cn/',
+  '美团借钱': 'https://i.meituan.com/credit/',
+  '滴滴借款': 'https://www.didiglobal.com/',
+  '新浪借钱': 'https://loan.finance.sina.com.cn/',
+  // 抵押贷款
+  '平安普惠': 'https://www.paph.com.cn/',
+  '陆金所': 'https://www.lu.com/',
+  '宜信': 'https://www.creditease.cn/',
+  '房抵贷': 'https://www.paph.com.cn/product/house',
+  // 房贷
+  '公积金贷款计算器': 'https://www.zfgjj.com/',
+  '商业房贷': 'https://www.ccb.com/cn/personal/loans/housing.html',
+  '组合贷款': 'https://www.ccb.com/cn/personal/loans/housing.html',
+  // 车贷
+  '平安车贷': 'https://www.pingan.com/carloan',
+  '一汽金融': 'https://www.fawfc.com/',
+  '上汽通用车贷': 'https://www.saicgmac.com/',
+  // 企业贷款
+  '网商银行': 'https://www.mybank.cn/',
+  '微众银行': 'https://www.webank.com/',
+  '建设银行小微贷': 'https://www.ccb.com/cn/sme/',
+  '渣打银行企业贷': 'https://www.sc.com/cn/business/'
+};
+
+// 跳转到贷款产品页面
+function goToProduct(name) {
+  var url = productLinks[name];
+  if (!url) {
+    alert('该产品链接暂未配置');
+    return;
+  }
+  // 如果配置了推广ID，拼接追踪参数（不同联盟格式不同，拿到后调整）
+  if (AFF_ID !== 'YOUR_AFF_ID') {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + 'channel=' + encodeURIComponent(AFF_ID);
+  }
+  // 统计点击（如果后续接入百度统计/GA会自动追踪）
+  if (window._hmt) window._hmt.push(['_trackEvent', 'product_click', name]);
+  if (window.gtag) gtag('event', 'product_click', { product: name });
+  console.log('跳转产品:' + name, '→', url);
+  window.open(url, '_blank');
+}
+
 // Category filter
 function filterCategory(cat, el) {
   document.querySelectorAll('.cat-tag').forEach(t => {
@@ -1646,6 +1703,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (field) field.style.display = this.value === 'full' ? 'none' : '';
     });
   }
+
+  // 全局委托：产品卡片点击跳转（计算器卡片除外，它们有自己的onclick）
+  document.addEventListener('click', function(e) {
+    var card = e.target.closest('.app-card');
+    if (!card) return;
+    var name = card.dataset.name;
+    var cat = card.dataset.cat;
+    if (!name || cat === 'calculator') return;
+    // 阻止搜索框点击等误触发
+    if (e.target.closest('input') || e.target.closest('button')) return;
+    goToProduct(name);
+  });
 });
 
 </script>
